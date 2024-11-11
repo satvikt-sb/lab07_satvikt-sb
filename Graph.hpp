@@ -48,7 +48,6 @@ struct NodeInfo {
 // node refers to the node at the receiving end of the directed edge, 
 // and weight refers to the weight of the connection. 
 struct Connection {
-
     public:
         Connection();
         Connection(int source, int dest, double weight);
@@ -65,7 +64,6 @@ struct Connection {
         double weight;
         // The accumulated derivative for this weight
         double delta;
-
 };
 
 // AdjList becomes an alias for std::vector<std::unordered_map<int, Connection> >
@@ -78,7 +76,6 @@ typedef std::vector<std::unordered_map<int, Connection> > AdjList;
 // We store the addresses of the nodes and put the nodes on the heap so that the information stored in the node may be arbitrarily large
 // But the only thing on the stack is the id of each node. 
 class Graph {
-
     public:
         Graph();
         Graph(int size);
@@ -86,13 +83,10 @@ class Graph {
         Graph& operator=(const Graph& other);
         ~Graph();
 
-
         // TODO: graph methods
         void updateNode(int id, NodeInfo n);
         NodeInfo* getNode(int id) const;
         void updateConnection(int v, int u, double w);
-
-        
 
         AdjList& getAdjacencyList();
 
@@ -109,7 +103,6 @@ class Graph {
         // to be an accurate representation of this node. Use node id to index into this vector. 
         std::vector<NodeInfo*> nodes;
 
-
         // maintains number of nodes just for bookkeeping purposes
         int size;
 
@@ -117,8 +110,6 @@ class Graph {
 
         // TODO: graph methods
         void clear();
-
-        
 };
 
 #endif

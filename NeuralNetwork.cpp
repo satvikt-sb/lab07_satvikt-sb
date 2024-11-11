@@ -6,19 +6,16 @@ using namespace std;
 
 // NeuralNetwork -----------------------------------------------------------------------------------------------------------------------------------
 
-// STUDENT TODO: IMPLEMENT
 void NeuralNetwork::eval() {
-    //stub
+    evaluating = true;
 }
 
-// STUDENT TODO: IMPLEMENT
 void NeuralNetwork::train() {
-    //stub
+    evaluating = false;
 }
 
-// STUDENT TODO: IMPLEMENT
 void NeuralNetwork::setLearningRate(double lr) {
-    //stub
+    this->learningRate = lr;
 }
 
 // STUDENT TODO: IMPLEMENT
@@ -43,7 +40,6 @@ vector<int> NeuralNetwork::getOutputNodeIds() const {
 
 // STUDENT TODO: IMPLEMENT
 vector<double> NeuralNetwork::predict(DataInstance instance) {
-
     vector<double> input = instance.x;
 
     // error checking : size mismatch
@@ -54,7 +50,7 @@ vector<double> NeuralNetwork::predict(DataInstance instance) {
         return vector<double>();
     }
 
-    // BFT implementation goes here
+    // BFS implementation goes here
 
     // 1. Set up your queue initialization
     // 2. Start visiting nodes using the queue
@@ -76,9 +72,9 @@ vector<double> NeuralNetwork::predict(DataInstance instance) {
     }
     return output;
 }
+
 // STUDENT TODO: IMPLEMENT
 bool NeuralNetwork::contribute(double y, double p) {
-
     double incomingContribution = 0;
     double outgoingContribution = 0;
     NodeInfo* currNode = nullptr;
@@ -92,9 +88,9 @@ bool NeuralNetwork::contribute(double y, double p) {
 
     return true;
 }
+
 // STUDENT TODO: IMPLEMENT
 double NeuralNetwork::contribute(int nodeId, const double& y, const double& p) {
-
     double incomingContribution = 0;
     double outgoingContribution = 0;
     NodeInfo* currNode = nodes.at(nodeId);
@@ -111,19 +107,26 @@ double NeuralNetwork::contribute(int nodeId, const double& y, const double& p) {
 
     return outgoingContribution;
 }
-// STUDENT TODO: IMPLEMENT
+
 bool NeuralNetwork::update() {
     // apply the derivative contributions
 
-    // traverse the graph in anyway you want. 
-    // Each node has a delta term 
-    // Each connection has a delta term
+    for (int i = 0; i < nodes.size(); i++) {
 
-    // use the formulas for each update
-    // bias update: bias = bias - (learningRate * delta)
-    // weight update: weight = weight - (learningRate * delta)
-    // reset the delta term for each node and connection to zero.
-    
+        // update this node's bias
+        nodes.at(i)->bias -= (learningRate * nodes.at(i)->delta);
+        // reset this node's delta
+        nodes.at(i)->delta = 0;
+
+        // update all outgoing weights
+        for (auto j = adjacencyList.at(i).begin(); j != adjacencyList.at(i).end(); j++) {
+            j->second.weight -= (learningRate * j->second.delta);
+
+            // reset weight delta
+            j->second.delta = 0;
+        }
+
+    }    
     flush();
     return true;
     

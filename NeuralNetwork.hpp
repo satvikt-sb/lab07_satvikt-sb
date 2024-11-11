@@ -10,7 +10,6 @@
 // The NeuralNetwork class inherits from the Graph class, because a NeuralNetwork is a more specific type of Graph!
 // You have not learned about inherited classes yet, but for now, treat the NeuralNetwork class as if it were also of type Graph.
 class NeuralNetwork : public Graph {
-
     public:
 
         // use these constructors for building your neural network manually through code
@@ -22,13 +21,14 @@ class NeuralNetwork : public Graph {
         NeuralNetwork(std::istream& in);
 
 
-        // TODO: getters / setters
         // Put the neural network in "eval" mode. In "eval" mode, the neural network will not accumulate gradients.
         void eval();
         // Put the neural network in "train" mode. In "train" mode, the neural network will accumulated gradients.
         void train();
         // sets the learning rate of the neural network: how impactful each gradient contribution is at each step.
         void setLearningRate(double lr);
+
+        // TODO: getters / setters
         // contains set of node ids which correspond to input nodes
         void setInputNodeIds(std::vector<int> inputNodeIds);
         // contains a set of node ids which correspond to output nodes
@@ -38,14 +38,12 @@ class NeuralNetwork : public Graph {
         // gets the id's of every output node.
         std::vector<int> getOutputNodeIds() const;
 
-
         // TODO: Neural Network Implementations
         // Flow data instance into the neural network and compute the predicted value. 
         std::vector<double> predict(DataInstance instance);
+
         // Apply accumumated gradients to every weight and every bias
         bool update();
-
-
 
         // Other useful methods...
         // Calculates the neural networks accuracy given a dataset in the form of a DataLoader object.
@@ -57,7 +55,6 @@ class NeuralNetwork : public Graph {
         friend std::ostream& operator<<(std::ostream& out, const NeuralNetwork& nn);
 
     private:
-
         // TODO: given the neural nets prediction and the ground truth label, it accumulates gradients for weights and biases. 
         // each contribution is accumulated in a variable called delta, which resides in every node (for the bias) and every connection (for the weight)
         bool contribute(double y, double p);
@@ -99,7 +96,6 @@ class NeuralNetwork : public Graph {
         void flush();
 
         // since NeuralNetwork inherits from Graph, you can imagine all of the graph members here as well...
-
 };
 
 #endif
