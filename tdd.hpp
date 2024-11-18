@@ -17,4 +17,4 @@ void ASSERT_EQUAL(NeuralNetwork actual, NeuralNetwork expected, string testName)
 void ASSERT_EQUAL(vector<double> actual, vector<double> expected, string testName);
 void ASSERT_EQUAL(Connection actual, Connection expected, string testName);
 
-#endif
+#endif // TDD_HPP

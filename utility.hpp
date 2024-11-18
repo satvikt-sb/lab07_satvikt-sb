@@ -42,4 +42,4 @@ double sample();
 
 std::ostream& operator<<(std::ostream& out, std::vector<double> v);
 
-#endif
+#endif // UTILITY_HPP

@@ -3,8 +3,8 @@
 
 // DO NOT TOUCH THIS FILE!!!!!
 // If you are curious about this file's implementation, read on! :)
-/*
 
+/*
 This class was constructed because we wanted a convienant data management structure to interface with the nerual network.
 A DataLoader object essentially holds a dataset and does some useful processing on the data before it is sent to the neural network.
 
@@ -31,8 +31,6 @@ This approach is similar to what the pytorch python library does, which requires
 #include <sstream>
 #include <cmath>
 
-
-
 struct DataInstance {
     DataInstance(std::vector<double> features, int label = 0);
     std::vector<double> x;
@@ -45,20 +43,18 @@ std::vector<double> calculateMean(const std::vector<DataInstance>& data);
 std::vector<double> calculateStdDev(const std::vector<DataInstance>& data, const std::vector<double>& mean);
 
 class DataLoader {
-    public:
-        DataLoader(std::string filename);
-        DataLoader(std::istream& fin);
+public:
+    DataLoader(std::string filename);
+    DataLoader(std::istream& fin);
 
-        std::vector<DataInstance> getData() const;
+    std::vector<DataInstance> getData() const;
 
-    private:
+private:
+    std::vector<std::string> split(std::string s, std::string delimiter);
+    void loadData(std::istream& in);
+    std::vector<DataInstance> data;
 
-        std::vector<std::string> split(std::string s, std::string delimiter);
-        void loadData(std::istream& in);
-        std::vector<DataInstance> data;
-
-        void normalizeDataSet();
-
+    void normalizeDataSet();
 };
 
-#endif
+#endif // DATALOADER_HPP

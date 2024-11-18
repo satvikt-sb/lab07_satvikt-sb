@@ -2,8 +2,6 @@
 #include "NeuralNetwork.hpp"
 using namespace std;
 
-
-
 // NeuralNetwork -----------------------------------------------------------------------------------------------------------------------------------
 
 void NeuralNetwork::eval() {
@@ -142,9 +140,6 @@ bool NeuralNetwork::update() {
 // ----------- YOU DO NOT NEED TO TOUCH THE REMAINING CODE -----------------------------------------------------------------
 // ----------- YOU DO NOT NEED TO TOUCH THE REMAINING CODE -----------------------------------------------------------------
 // ----------- YOU DO NOT NEED TO TOUCH THE REMAINING CODE -----------------------------------------------------------------
-
-
-
 
 
 
@@ -359,8 +354,6 @@ void NeuralNetwork::saveModel(string filename) {
     fout << biasStream.str();
 
     fout.close();
-
-
 }
 
 ostream& operator<<(ostream& out, const NeuralNetwork& nn) {

@@ -7,7 +7,6 @@ using namespace std;
 void testTrain(string networkFile, string trainFile, string testFile);
 
 int main(int argc, char* argv[]) {
-
     // once you get the basic setters and getters and graph methods complete, you should be able
     // to play around with this file and explore the neural net. 
     // diabetes1.init contains a pretrained model. 

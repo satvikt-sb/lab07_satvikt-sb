@@ -3,8 +3,8 @@ using namespace std;
 
 // DO NOT TOUCH THIS FILE!!!!!
 // If you are curious about this file's implementation, read on! :)
-/*
 
+/*
 This class was constructed because we wanted a conveinant data management structure to interface with the nerual network.
 A DataLoader object essentially holds a dataset and does some useful processing on the data before it is sent to the neural network.
 
@@ -99,7 +99,6 @@ std::vector<std::string> DataLoader::split(string s, string delimiter) {
 }
 
 void DataLoader::loadData(istream& in) {
-
     std::string line;
     while (getline(in, line)) {
 
