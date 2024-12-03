@@ -92,28 +92,46 @@ std::ostream& operator<<(std::ostream& out, const Connection& c) {
 
 // STUDENT TODO: IMPLEMENT
 void Graph::updateNode(int id, NodeInfo n) {
-    if (true /* stub condition: change this to the correct condition*/) {
+    if (id >= nodes.size()) {
         cout << "Attempting to update node with id: " << id << " but node does not exist" << endl;
         return;
     }
 
+    if (nodes[id] != nullptr) {
+        delete nodes[id];
+    }
+
+    nodes.at(id) = new NodeInfo(n);
     return; //stub
 }
 
 // STUDENT TODO: IMPLEMENT
 NodeInfo* Graph::getNode(int id) const {
-    return nullptr; //stub
+    if (id >= nodes.size()){
+        return nullptr;
+    }
+    return nodes[id];
 }
 
 // STUDENT TODO: IMPLEMENT
 void Graph::updateConnection(int v, int u, double w) {
-    if (true /* stub condition: change this to the correct condition*/) {
+    if (v >= nodes.size() || nodes[v] == nullptr) {
         cerr << "Attempting to update connection between " << v << " and " << u << " with weight " << w << " but " << v << " does not exist" << endl;
         exit(1);
     }
-    if (true /* stub condition: change this to the correct condition*/) {
+    
+    if (u >= nodes.size() || nodes[u] == nullptr) {
         cerr << "Attempting to update connection between " << v << " and " << u << " with weight " << w << " but " << u << " does not exist" << endl;
         exit(1);
+    }
+
+    if (adjacencyList[v].find(u) != adjacencyList[v].end()){
+        Connection* conn1 = new Connection(v,u,w);
+        adjacencyList[v][u] = *conn1;
+    }
+    else {
+        Connection* conn2 = new Connection(v,u,w);
+        adjacencyList[v][u] = *conn2;
     }
     
     return; //stub
@@ -121,7 +139,10 @@ void Graph::updateConnection(int v, int u, double w) {
 
 // STUDENT TODO: IMPLEMENT
 void Graph::clear() {
-    return; //stub
+    for (NodeInfo* n : nodes){
+        delete n;
+    }
+    nodes.clear();
 }
 
 
