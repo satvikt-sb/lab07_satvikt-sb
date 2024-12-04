@@ -18,22 +18,24 @@ void NeuralNetwork::setLearningRate(double lr) {
 
 // STUDENT TODO: IMPLEMENT
 void NeuralNetwork::setInputNodeIds(std::vector<int> inputNodeIds) {
-    //stub
+    this->inputNodeIds = inputNodeIds;
+    return;
 }
 
 // STUDENT TODO: IMPLEMENT
 void NeuralNetwork::setOutputNodeIds(std::vector<int> outputNodeIds) {
-    //stub
+    this->outputNodeIds = outputNodeIds;
+    return;
 }
 
 // STUDENT TODO: IMPLEMENT
 vector<int> NeuralNetwork::getInputNodeIds() const {
-    return vector<int>(); //stub
+    return inputNodeIds; //stub
 }
 
 // STUDENT TODO: IMPLEMENT
 vector<int> NeuralNetwork::getOutputNodeIds() const {
-    return vector<int>(); //stub
+    return outputNodeIds; //stub
 }
 
 // STUDENT TODO: IMPLEMENT
@@ -49,9 +51,32 @@ vector<double> NeuralNetwork::predict(DataInstance instance) {
     }
 
     // BFS implementation goes here
-
+    vector<bool> visited(nodes.size(), false);
     // 1. Set up your queue initialization
+    queue<int> nodeQueue;
     // 2. Start visiting nodes using the queue
+
+    int s = inputNodeIds.front();
+    for (int i = 0; i < inputNodeIds.size();i++){
+        int index = inputNodeIds.at(i);
+        nodeQueue.push(index);
+        nodes[index]->preActivationValue = input[i];
+        visited[index] = true;
+    }
+
+    while (!nodeQueue.empty()){
+        s = nodeQueue.front();
+        nodeQueue.pop();
+        visitPredictNode(s);
+
+        for (auto it : adjacencyList.at(s)){
+            visitPredictNeighbor(it.second);
+            if (!visited[it.second.dest]){
+                visited[it.second.dest] = true;
+                nodeQueue.push(it.second.dest);
+            }
+        }
+    }
 
     vector<double> output;
     for (int i = 0; i < outputNodeIds.size(); i++) {
@@ -82,6 +107,21 @@ bool NeuralNetwork::contribute(double y, double p) {
     // There is no need to visitContributeNode for the input layer since there is no bias to update.
 
 
+    for(int i : inputNodeIds){
+
+        for (auto &it : adjacencyList.at(i)){
+            int destNode = it.second.dest;
+
+            if (contributions.find(destNode) != contributions.end()){
+                incomingContribution = contributions[destNode];
+            } else {
+                incomingContribution = contribute(destNode,y,p);
+            }
+
+            visitContributeNeighbor(it.second, incomingContribution, outgoingContribution);
+        }
+    }       
+
     flush();
 
     return true;
@@ -95,14 +135,30 @@ double NeuralNetwork::contribute(int nodeId, const double& y, const double& p) {
 
     // find each incoming contribution, and contribute to the nodes outgoing weights
     // If the node is already found, use its precomputed contribution from the contributions map
+ 
 
+    for (auto &it : adjacencyList.at(nodeId)) {
+        int destNode = it.second.dest;
+
+        if (contributions.find(destNode) != contributions.end()) {
+            incomingContribution = contributions[destNode];
+        } else {
+            incomingContribution = contribute(destNode, y, p);
+        }
+
+        visitContributeNeighbor(it.second, incomingContribution, outgoingContribution);
+    }
+     
+    
     if (adjacencyList.at(nodeId).empty()) {
         // base case, we are at the end
         outgoingContribution = -1 * ((y - p) / (p * (1 - p)));
     } 
 
     // Now contribute to yourself and prepare the outgoing contribution
+    visitContributeNode(nodeId, outgoingContribution);
 
+    contributions[nodeId] = outgoingContribution;
     return outgoingContribution;
 }
 
